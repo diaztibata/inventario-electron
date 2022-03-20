@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema Inventarios Vargos</title>
+  <link rel="stylesheet" href="ui/app.css">
+</head>
+
+<body>
+
+  <div id="menu" class="menu" style="display: none; position: fixed; top: 30px; right: 30px; width: 140px; padding: 20px; background-color: orange;">
+    <style>
+      .menu button{
+        display: block;
+        width: 100%;
+        margin-top: 5px;
+      }
+    </style>
+    <button onclick="mostrarVentana('inventario')">inventario</button>
+    <button onclick="mostrarVentana('usuario')">usuario</button>
+    <button onclick="mostrarVentana('proveedores')">proveedores</button>
+    <button onclick="mostrarVentana('vender')">vender</button>
+    <button onclick="mostrarVentana('lista-venta')">lista-venta</button>
+    <button id="logout" onclick="logout('login')">desloguearse</button>
+  </div>
+
+  <div style="background-color: chartreuse;" id="login" class="login ventana">
+    <input type="text" name="correo" placeholder="correo" id="correo-usuario">
+    <input type="password" name="contraseña" placeholder="contraseña" id="pass-usuario">
+    <button onclick="loguearse()">Loguearse</button>
+  </div>
+
+  <div style="background-color: red; display: none;" id="inventario" class="inventarios ventana">
+    <h1>Inventario Vargos</h1>
+    <form id="taskForm" class="card">
+      <input type="text" id="taskNombre" placeholder="Nombre-Producto" autofocus>
+      <input type="text" id="taskCodigo" placeholder="Codigo" autofocus>
+      <input type="text" id="taskCategoria" placeholder="Categoria" autofocus>
+      <input type="text" id="taskCantidad" placeholder="Cantidad" autofocus>
+      <input type="text" id="taskPreciocompra" placeholder="$: Precio-Compra" autofocus>
+      <input type="text" id="taskPrecioventa" placeholder="$: Precio-venta" autofocus>
+      <input type="text" id="taskIva" placeholder="$: Iva" autofocus>
+      <input type="text" id="taskProveedor" placeholder="Proveedor" autofocus>
+    
+
+      <button type="submit" class="btn btn-secondary">
+        Save
+      </button>
+    </form>
+  
+    <!-- Inventarios -->
+    <table>
+      <thead>  
+        <tr>
+          <td>Id</td>
+          <td>Codigo</td>
+          <td>Nombre</td>
+          <td>Categoria</td>
+          <td>Cantidad</td>
+          <td>Precio Compra</td>
+          <td>Precio Venta</td>
+          <td>Iva</td>
+          <td>Proveedor</td>
+          <td>Borrar</td>
+          <td>Editar</td>
+        </tr>
+        
+      </thead>
+      <tbody id="taskList">
+  
+      </tbody>
+    </table>
+  </div>
+
+
+  
+  <div style="background-color: yellow; display: none;" id="usuario" class="usuario ventana">
+    <h1>Usuario</h1>
+    <form id="usuarioForm" class="card">
+      <input type="text" id="usuarioName" placeholder="Ingrese Correo" autofocus>
+      <input type= "text"id="usuarioDescription" placeholder="Ingrese Usuario" autofocus></input>
+      <input type= "password"id="usuarioCorreo" placeholder="Ingrese Contraseña" autofocus></input>
+      <input type= "text"id="usuarioCargo" placeholder="Ingrese Cargo" autofocus></input>
+      <button type="submit" class="btn btn-secondary">
+        Save
+      </button>
+    </form>
+
+    <!-- Apartado usuario -->
+    <table>
+      <thead>  
+        <tr>
+          <td>Id</td>
+          <td>Correo</td>
+          <td>Usuario</td>
+          <td>Contraseña</td>
+          <td>Cargo</td>
+          <td>Borrar</td>
+          <td>Editar</td>
+        </tr>
+        
+      </thead>
+      <tbody id="usuarioList">
+  
+      </tbody>
+    </table>
+    
+  
+    <!-- Apartado Proveeedor -->
+    <ul id="usuarioList"></ul>
+  </div>
+
+  <div style="background-color: aliceblue; display: none;" id="proveedores" class="proveedores ventana">
+    <h1>Proveedores</h1>
+    <form id="proveedorForm" class="card">
+      <input type="text" id="proveedorCodigo" placeholder="Codigo" autofocus>
+      <input type="text" id="proveedorName" placeholder="Nombre Empresa" autofocus>
+      <input type="text" id="proveedorContacto" placeholder="Nombre Contacto" autofocus>
+      <input type="text" id="proveedorTelefono" placeholder="Telefono Proveedor" autofocus>
+      <input type="text" id="proveedorDireccion" placeholder="Dirección Proveedor" autofocus>
+      <input type="text" id="proveedorProductos" placeholder="Productos Proveedor" autofocus>
+  
+      <button type="submit" class="btn btn-secondary">
+        Save
+      </button>
+    </form>
+
+    <!-- Task List -->
+    <table>
+      <thead>  
+        <tr>
+          <td>Id</td>
+          <td>Codigo</td>
+          <td>Nombre</td>
+          <td>Direccion</td>
+          <td>Telefono</td>
+          <td>Contacto</td>
+          <td>Productos</td>
+          <td>Borrar</td>
+          <td>Editar</td>
+        </tr>
+      </thead>
+      <tbody id="proveedorList">
+  
+      </tbody>
+    </table>
+  
+    <!-- Proveedor List -->
+    <ul id="proveedorList"></ul>
+  </div>
+
+  <!-- Apartado Ventas -->
+
+  <div style="background-color: purple; display: none;" id="vender" class="vender ventana">
+
+    <h1>Ventas</h1>
+    <select id="seleccionProductoLista">
+    </select>
+    <button onclick="addProductoVenta()">Añadir</button>
+
+    
+    <p>paga con: <input type="number" name="" id="paga-con"></p>
+    <button id="completar-venta">completar venta</button>
+    <button id="cancelar-venta" onclick="cancelarVenta()">cancelar venta</button>
+    
+    <ul id="lista-productos-venta"></ul>
+    <div id="total-suma"></div> 
+  </div>
+
+  <div style="background-color: navy; display: none;" id="lista-venta" class="lista-venta ventana">
+    <h1>Lista productos vendidos</h1>
+    <!-- Venta List -->
+    <ul id="ventaList"></ul >
+  </div>
+
+
+
+  <script src="ui/app.js"></script>
+</body>
+
+</html>
